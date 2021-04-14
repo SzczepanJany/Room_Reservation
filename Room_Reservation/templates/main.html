@@ -12,7 +12,15 @@
     </p>
 </head>
 <body>
-    
+    {% for room in rooms %}
+      <p>
+      <p><label for="name">Name: </label> {{room.name}}</p>
+      <p><label for="capacity">Capacity:</label> {{room.capacity}}</p>
+      <p><label for="is_free">Free now!</label></p>
+      <p><label for="projector">Projector: </label>{{room.projector}}</p>
+      </p>
+
+    {% endfor %}
 </body>
 
 

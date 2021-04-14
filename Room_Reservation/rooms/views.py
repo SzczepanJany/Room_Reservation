@@ -10,7 +10,8 @@ from django.contrib import messages
 # Create your views here.
 class main(View):
     def get(self, request):
-        return render(request, template_name='main.html')
+        rooms = Room.objects.all()
+        return render(request, template_name='main.html', context={'rooms':rooms})
     def post(self, request):
         pass
 
