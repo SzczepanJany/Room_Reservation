@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <title>Room reservation</title>
+    {% include 'menu.html' %}
+    <p>
+
+    </p>
+</head>
+<body>
+
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-secondary alert-dismissible fade show">
+          <strong> {{ message }} </strong>
+      </div>
+    {% endfor %}
+    {% endif %}
+<form method="post"> {% csrf_token %}
+    
+    <p><label for="name">Room name: </label><input type="text" name="name" value=""></p>
+    <p><label for="capacity">Capacity: </label><input type="number" name="capacity" value=""></p>
+    <p><label for="projector">Projector: </label><input type="checkbox" name="projector"></p>
+    
+    <br>
+    <input type="submit" value="Add room">
+    </form>
+
+
+    <footer id="footer">
+        <p>Author: Szczepan Jany</p>
+      </footer>
+    </html>
