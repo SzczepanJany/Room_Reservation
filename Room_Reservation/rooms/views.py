@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from django.views import View
 from django.urls import reverse
-from rooms.models import Room
+from rooms.models import Room, Room_Reservation
 from django.contrib import messages
-
+from datetime import date, datetime
 
 # Create your views here.
 class main(View):
@@ -51,8 +51,10 @@ class room_add(View):
 
 
 class room(View):
-    def get(self, request):
-        pass
+    def get(self, request, id):
+        room = Room.objects.get(id=id)
+        reservations = Room_Reservation.objects.filter(room_id = room.id, res_date__gte=datetime.today().strftime('%Y-%m-%d')).order_by('res_date')
+        return render(request, template_name='room.html', context={'room':room, 'reservations':reservations})
     def post(self, request):
         pass
 
@@ -98,6 +100,28 @@ class room_del(View):
 
 class room_res(View):
     def get(self, request, id):
-        pass
+        return render(request, template_name="room_res.html", context={'today':datetime.today()})
     def post(self, request, id):
-        pass
+        room = Room.objects.get(id=id)
+        
+
+        res_date = request.POST.get('res_date')
+        if res_date < str(datetime.today().strftime('%Y-%m-%d')):
+            messages.info(request, f"Cannot book room for the date from the past")
+            return redirect(reverse('room_res', args=(id,)))
+        res_comm = request.POST.get('comment')
+        no_res = False
+        try:
+            res = Room_Reservation.objects.get(room_id=room, res_date=res_date)
+        except:
+            no_res = True
+        if no_res:
+            reservation = Room_Reservation()
+            reservation.res_date = res_date
+            reservation.comment = res_comm
+            reservation.room_id = room.id
+            reservation.save()
+            return redirect(reverse('rooms'))
+        else:
+            messages.info(request, f'Room already booked for this date')
+            return redirect(reverse('room_res', args=(id,)))

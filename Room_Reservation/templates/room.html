@@ -21,17 +21,27 @@
       </div>
     {% endfor %}
     {% endif %}
-    
-<form method="post"> {% csrf_token %}
-    <p><label for="start">Start date:</label><input type="date" name="res_date"
-       value="{{today|date:'Y-m-d'}}"
-       min="{{today|date:'Y-m-d'}}" max="2040-12-31">
-    </p>
-    <p><label for="comment">Comment here: </label><textarea name="comment" rows="4" value=""></textarea></p>
-    <br>
-    <input type="submit" value="Add reservation">
-    </form>
 
+      {{room.room_reservation.all}}
+    <p>Room name: {{room.name}}</p>
+    <p>Capacity: {{room.capacity}}</p>
+    <p>Projector: 
+    {% if room.projector %}
+    true
+    {% else %}
+    false
+    {% endif %}</p>
+    {% for res in reservations %}
+        <fieldset>
+            <p>Reservation day: {{ res.res_date }}</p>
+            <p>Comment: {{ res.comment }}</p>
+        </fieldset>
+    {% endfor %}
+
+    <br>
+    <p><a href="{% url 'room_del' room.id %}">Delete</a>
+    <a href="{% url 'room_mod' room.id %}">Modify</a>
+    <a href="{% url 'room_res' room.id %}">Reserve</a></p>
 
     <footer id="footer">
         <p>Author: Szczepan Jany</p>
