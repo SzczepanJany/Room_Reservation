@@ -1,25 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <title>Room reservation</title>
+    
     {% include 'menu.html' %}
     <p>
 
     </p>
 </head>
 <body>
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-secondary alert-dismissible fade show">
+          <strong> {{ message }} </strong>
+      </div>
+    {% endfor %}
+    {% endif %}
+    {% if empty %}
+      <p><strong>No rooms available</strong></p>
+    {% endif %}
     {% for room in rooms %}
-      <p>
-      <p><label for="name">Name: </label> {{room.name}}</p>
+    <fieldset>
+      <p><label for="name">Name: </label><a href="{% url 'room' room.id %}">{{room.name}}</a></p>
       <p><label for="capacity">Capacity:</label> {{room.capacity}}</p>
-      <p><label for="is_free">Free now!</label></p>
+      <p><label for="status">Status: </label> {{room.status}}</p>
       <p><label for="projector">Projector: </label>{{room.projector}}</p>
-      </p>
-
+      <p><a href="{% url 'room_del' room.id %}">Delete</a>
+      <a href="{% url 'room_mod' room.id %}">Modify</a>
+      <a href="{% url 'room_res' room.id %}">Reserve</a></p>
+    </fieldset>
     {% endfor %}
 </body>
 

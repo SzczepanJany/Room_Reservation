@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% load static %}
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,12 +23,15 @@
     {% endif %}
 <form method="post"> {% csrf_token %}
     
-    <p><label for="name">Room name: </label><input type="text" name="name" value=""></p>
-    <p><label for="capacity">Capacity: </label><input type="number" name="capacity" value=""></p>
+    <p><label for="name">Room name: </label><input type="text" name="name" value="{{room.name}}"></p>
+    <p><label for="capacity">Capacity: </label><input type="number" name="capacity" value="{{room.capacity}}"></p>
+    {% if room.projector %}
+    <p><label for="projector">Projector: </label><input type="checkbox" name="projector" checked></p>
+    {% else %}
     <p><label for="projector">Projector: </label><input type="checkbox" name="projector"></p>
-    
+    {% endif %}
     <br>
-    <input type="submit" value="Add room">
+    <input type="submit" value="Save changes">
     </form>
 
 

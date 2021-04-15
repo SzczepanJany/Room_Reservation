@@ -16,11 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from rooms.views import main, room_add
+from rooms.views import main, room_add, room, room_modify, room_del, room_res
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('rooms/', main.as_view(), name='rooms'),
     path('room/add/', room_add.as_view(), name='room_add'),
+    path('room/<int:id>', room.as_view(), name='room'),
+    path('room/modify/<int:id>', room_modify.as_view(), name='room_mod'),
+    path('room/delete/<int:id>', room_del.as_view(), name='room_del'),
+    path('room/reserve/<int:id>', room_res.as_view(), name='room_res'),
+
 ]
