@@ -14,13 +14,26 @@
     </p>
 </head>
 <body>
-    {% if messages %}
+  {% if messages %}
     {% for message in messages %}
       <div class="alert alert-secondary alert-dismissible fade show">
           <strong> {{ message }} </strong>
       </div>
     {% endfor %}
     {% endif %}
+
+  <form method="GET" action="/rooms/search/">
+    <fieldset>
+    <p><label for="name">Room name: </label><input type="text" name="name" value=""></p>
+    <p><label for="capacity">Minimal capacity: </label><input type="number" name="capacity" value=""></p>
+    <p><label for="if_projector">Search for projector? </label><input type="checkbox" name="if_projector">
+      <label for="projector">Projector: </label><input type="checkbox" name="projector"></p>
+  
+    <p><input type="submit" value="search"></p>
+  </fieldset>
+    </form>
+
+    
     {% if empty %}
       <p><strong>No rooms available</strong></p>
     {% endif %}

@@ -127,3 +127,32 @@ class room_res(View):
         else:
             messages.info(request, f'Room already booked for this date')
             return redirect(reverse('room_res', args=(id,)))
+
+class room_search(View):
+    def get(self, request):
+        name = request.GET.get('name')
+        capacity = request.GET.get('capacity')
+        projector = request.GET.get('projector')
+        if_projector = request.GET.get('if_projector')
+        try:
+            capacity = int(capacity)
+        except:
+            if capacity:
+                messages.info(request, f'Check capacity')
+                return redirect(reverse('rooms'))
+            else:
+                pass
+
+        room = Room.objects.none()
+        if name:
+            room |= Room.objects.filter(name=name).order_by('name')
+        if capacity:
+            room |= Room.objects.filter(capacity__gte=capacity).order_by('name')
+        if if_projector:
+            room |= Room.objects.filter(projector=projector=='on').order_by('name')
+        res_all = Room_Reservation.objects.order_by('res_date')
+        if not room:
+            empty = True
+        else:
+            empty = False
+        return render(request, template_name='main.html', context={'rooms':room, 'empty':empty, 'today':datetime.today(), 'res_all':res_all})
