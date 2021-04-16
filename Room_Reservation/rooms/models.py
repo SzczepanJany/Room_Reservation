@@ -9,7 +9,7 @@ class Room(models.Model):
 
 class Room_Reservation(models.Model):
     res_date = models.DateField(default=date.today())
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name="res_room", on_delete=models.CASCADE)
     comment = models.TextField()
     class Meta:
         unique_together = ('res_date', 'room',)

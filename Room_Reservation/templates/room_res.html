@@ -31,8 +31,14 @@
     <br>
     <input type="submit" value="Add reservation">
     </form>
-
-
+    <p>
+    {% for res in res_total %}
+        <fieldset>
+            <p>Reservation day: {{ res.res_date }}</p>
+            <p>Comment: {{ res.comment }}</p>
+        </fieldset>
+    {% endfor %}
+</p>
     <footer id="footer">
         <p>Author: Szczepan Jany</p>
       </footer>

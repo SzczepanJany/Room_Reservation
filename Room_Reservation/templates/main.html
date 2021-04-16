@@ -28,8 +28,13 @@
     <fieldset>
       <p><label for="name">Name: </label><a href="{% url 'room' room.id %}">{{room.name}}</a></p>
       <p><label for="capacity">Capacity:</label> {{room.capacity}}</p>
-      <p><label for="status">Status today: </label> {{room.status}}</p>
       <p><label for="projector">Projector: </label>{{room.projector}}</p>
+      {% for res in res_all%}
+        {% if res.res_date|date:'Y-m-d' == today|date:'Y-m-d' and res.room_id == room.id%}
+          <strong>Booked for today</strong>
+        {% endif %}
+      {% endfor %}
+
       <p><a href="{% url 'room_del' room.id %}">Delete</a>
       <a href="{% url 'room_mod' room.id %}">Modify</a>
       <a href="{% url 'room_res' room.id %}">Reserve</a></p>

@@ -11,12 +11,12 @@ from datetime import date, datetime
 class main(View):
     def get(self, request):
         rooms = Room.objects.order_by('id')
-
+        res_all = Room_Reservation.objects.order_by('res_date')
         if not rooms:
             empty = True
         else:
             empty = False
-        return render(request, template_name='main.html', context={'rooms':rooms, 'empty':empty})
+        return render(request, template_name='main.html', context={'rooms':rooms, 'empty':empty, 'today':datetime.today(), 'res_all':res_all})
     def post(self, request):
         pass
 
@@ -100,7 +100,9 @@ class room_del(View):
 
 class room_res(View):
     def get(self, request, id):
-        return render(request, template_name="room_res.html", context={'today':datetime.today()})
+        room = Room.objects.get(id=id)
+        res_total = Room_Reservation.objects.filter(room_id = room.id, res_date__gte=datetime.today().strftime('%Y-%m-%d')).order_by('res_date')
+        return render(request, template_name="room_res.html", context={'today':datetime.today(),'res_total':res_total})
     def post(self, request, id):
         room = Room.objects.get(id=id)
         
