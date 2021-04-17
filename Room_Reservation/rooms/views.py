@@ -53,7 +53,7 @@ class room_add(View):
 class room(View):
     def get(self, request, id):
         room = Room.objects.get(id=id)
-        reservations = Room_Reservation.objects.filter(room_id = room.id, res_date__gte=datetime.today().strftime('%Y-%m-%d')).order_by('res_date')
+        reservations = Room_Reservation.objects.filter(room = room, res_date__gte=datetime.today().strftime('%Y-%m-%d')).order_by('res_date')
         return render(request, template_name='room.html', context={'room':room, 'reservations':reservations})
     def post(self, request):
         pass
@@ -101,7 +101,7 @@ class room_del(View):
 class room_res(View):
     def get(self, request, id):
         room = Room.objects.get(id=id)
-        res_total = Room_Reservation.objects.filter(room_id = room.id, res_date__gte=datetime.today().strftime('%Y-%m-%d')).order_by('res_date')
+        res_total = Room_Reservation.objects.filter(room = room, res_date__gte=datetime.today().strftime('%Y-%m-%d')).order_by('res_date')
         return render(request, template_name="room_res.html", context={'today':datetime.today(),'res_total':res_total})
     def post(self, request, id):
         room = Room.objects.get(id=id)
@@ -114,14 +114,14 @@ class room_res(View):
         res_comm = request.POST.get('comment')
         no_res = False
         try:
-            res = Room_Reservation.objects.get(room_id=room, res_date=res_date)
+            res = Room_Reservation.objects.get(room=room, res_date=res_date)
         except:
             no_res = True
         if no_res:
             reservation = Room_Reservation()
             reservation.res_date = res_date
             reservation.comment = res_comm
-            reservation.room_id = room.id
+            reservation.room = room
             reservation.save()
             return redirect(reverse('rooms'))
         else:
